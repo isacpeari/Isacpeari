@@ -27,6 +27,7 @@ namespace GarenOP
         {
             Game.PrintChat("GarenOP loaded!");
             Game.OnGameUpdate += OnGameUpdate;
+            Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
         }
 
         public static int GetWardId()
@@ -60,8 +61,20 @@ namespace GarenOP
         {
             if (sender.IsMe)
             {
+
                 Game.PrintChat(args.SData.Name);
-                if (args.SData.Name == Q.ChargedSpellName)
+                if (args.SData.Name == "GarenBasicAttack")
+                {
+                    if (Dizzy)
+                    {
+                        Orbwalking.DisableNextAttack = true;
+                    }
+                    if (E.IsReady())
+                    {
+                        Dizzy = false;
+                    }
+                }
+                if (args.SData.Name == "GarenQ")
                 {
                     if (Q.IsReady())
                     {
@@ -69,7 +82,7 @@ namespace GarenOP
                         Game.Say("/all SILENZZZ SKRUBZZZ");
                     }
                 }
-                else if (args.SData.Name == W.ChargedSpellName)
+                else if (args.SData.Name == "GarenW")
                 {
                     if (W.IsReady() && ObjectManager.Player.SightWardsBought + ObjectManager.Player.VisionWardsBought >=3)
                     {
@@ -87,7 +100,7 @@ namespace GarenOP
                 }
                 //else if (args.SData.Name == ObjectManager.Player.Spellbook.GetSpellSlot(SpellSlot.E).SData.name)
                     
-                else if (args.SData.Name == E.ChargedSpellName)
+                else if (args.SData.Name == "GarenE")
                 {
                     if (E.IsReady())
                     {
@@ -102,11 +115,11 @@ namespace GarenOP
                         {
                             Dizzy = true;
                         };
-
+                        Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
                     }
 
                 }
-                else if (args.SData.Name == R.ChargedSpellName)
+                else if (args.SData.Name == "GarenR")
                 {
                     if (R.IsReady())
                     {
@@ -127,14 +140,7 @@ namespace GarenOP
             try
             {
                
-                if (Dizzy)
-                {
-                    Orbwalking.DisableNextAttack = true;
-                }
-                if (E.IsReady())
-                {
-                    Dizzy = false;
-                }
+                
 
                 if (Dancing)
                 {
