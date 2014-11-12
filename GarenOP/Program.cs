@@ -17,9 +17,15 @@ namespace GarenOP
         public static Spell E = new Spell(SpellSlot.E);
         public static Spell R = new Spell(SpellSlot.R);
         public static bool Dizzy = false;
+        public static System.Timers.Timer t;
         public static bool Dancing = false;
         static void Main(string[] args)
         {
+            t = new System.Timers.Timer()
+            {
+                Enabled = true,
+                Interval = 3000
+            };
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
         }
 
@@ -61,17 +67,20 @@ namespace GarenOP
         {
             if (sender.IsMe)
             {
-
-                Game.PrintChat(args.SData.Name);
-                if (args.SData.Name == "GarenBasicAttack")
+                if (args.SData.Name.ToLower().Equals("Recall"))
                 {
-                    if (Dizzy)
-                    {
-                        Orbwalking.DisableNextAttack = true;
-                    }
+                    Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
+                }
+                if (args.SData.Name.ToLower().Contains("basic"))
+                {
                     if (E.IsReady())
                     {
                         Dizzy = false;
+                    }
+                    else if(Dizzy==true)
+                    {
+                        ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
+
                     }
                 }
                 if (args.SData.Name == "GarenQ")
@@ -88,12 +97,14 @@ namespace GarenOP
                     {
                         W.Cast();
                         Vector2 pos = ObjectManager.Player.ServerPosition.To2D();
-                        pos.Y += 20;
+                        pos.Y += 80;
                         PutWard(pos);
-                        pos.Y -= 40;
-                        pos.X += 20;
+                        System.Threading.Thread.Sleep(600);
+                        pos.Y -= 160;
+                        pos.X += 80;
                         PutWard(pos);
-                        pos.X -= 40;
+                        System.Threading.Thread.Sleep(600);
+                        pos.X -= 160;
                         PutWard(pos);
                         Game.Say("/all ILLUMINATAYYYYYYYY");
                     }
@@ -105,17 +116,12 @@ namespace GarenOP
                     if (E.IsReady())
                     {
                         E.Cast();
-                        System.Timers.Timer t = new System.Timers.Timer()
-                        {
-                            Enabled = true,
-                            Interval = 3000
-                        };
+                        
 
-                        t.Elapsed += (object tSender, System.Timers.ElapsedEventArgs tE) =>
-                        {
-                            Dizzy = true;
-                        };
+                        
                         Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
+
+                        Game.PrintChat("You are too dizzy to attack for a while!");
                     }
 
                 }
@@ -139,8 +145,12 @@ namespace GarenOP
         {
             try
             {
-               
+
                 
+                t.Elapsed += (object tSender, System.Timers.ElapsedEventArgs tE) =>
+                {
+                    Dancing = false;
+                };
 
                 if (Dancing)
                 {
