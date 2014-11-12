@@ -80,10 +80,11 @@ namespace GarenOP
                     }
                     }
 
-                    if (args.SData.Name.ToLower().Equals("recall"))
-                    {
-                        Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
-                    }
+                }
+
+                if (args.SData.Name.ToLower().Equals("recall"))
+                {
+                    Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
                 }
                 if (args.SData.Name == "GarenQ")
                 {
