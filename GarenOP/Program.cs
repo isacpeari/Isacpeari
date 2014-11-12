@@ -67,20 +67,22 @@ namespace GarenOP
         {
             if (sender.IsMe)
             {
-                if (args.SData.Name.ToLower().Equals("Recall"))
-                {
-                    Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
-                }
                 if (args.SData.Name.ToLower().Contains("basic"))
                 {
-                    if (E.IsReady())
-                    {
-                        Dizzy = false;
-                    }
-                    else if(Dizzy==true)
+                    
+                   if(Dizzy==true)
                     {
                         ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
+                        if (E.IsReady())
+                    {
+                        Dizzy = false;
+                         Game.PrintChat("You are no longer dizzy!");
+                    }
+                    }
 
+                    if (args.SData.Name.ToLower().Equals("recall"))
+                    {
+                        Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
                     }
                 }
                 if (args.SData.Name == "GarenQ")
@@ -116,9 +118,9 @@ namespace GarenOP
                     if (E.IsReady())
                     {
                         E.Cast();
-                        
 
-                        
+
+                        Dizzy = true;
                         Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
 
                         Game.PrintChat("You are too dizzy to attack for a while!");
