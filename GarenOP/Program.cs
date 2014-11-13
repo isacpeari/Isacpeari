@@ -35,6 +35,7 @@ namespace GarenOP
 
         private static void Game_OnGameLoad(EventArgs args)
         {
+            //Let them know it loaded.
             Game.PrintChat("GarenOP loaded!");
             Game.OnGameUpdate += OnGameUpdate;
             Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
@@ -42,6 +43,7 @@ namespace GarenOP
 
         public static int GetWardId()
         {
+            //All the ward IDs
             int[] wardIds = { 3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043 };
             foreach (int id in wardIds)
             {
@@ -54,6 +56,7 @@ namespace GarenOP
 
         public static bool PutWard(Vector2 pos)
         {
+            //Loop through inventory and place down whatever wards you have.  Taken from Lee Sin scripts
             int wardItem;
             if ((wardItem = GetWardId()) != -1)
             {
@@ -71,6 +74,7 @@ namespace GarenOP
         {
             if (sender.IsMe)
             {
+                //If you basic attack while dizzy, then it gets cancelled
                 if (args.SData.Name.ToLower().Contains("basic"))
                 {
                     
@@ -85,17 +89,19 @@ namespace GarenOP
                     }
 
                 }
-
+                //Mother bitch recall.
                 if (args.SData.Name.ToLower().Equals("recall"))
                 {
                     Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
                 }
                 if (args.SData.Name == "GarenQ")
                 {
+                    //If you q while dizzy, it doesn't land.
                     if (Q.IsReady())
                     {
                         if (Dizzy == true)
                         {
+                            //So cancel the ability and then check dizzy status again
                             ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
                             if (E.IsReady())
                             {
@@ -103,6 +109,7 @@ namespace GarenOP
                                 Game.PrintChat("You are no longer dizzy!");
                             }
                         }
+                            //Otherwise cast the Q and yell at them
                         else
                         {
                             Q.Cast();
@@ -113,9 +120,10 @@ namespace GarenOP
                 }
                 else if (args.SData.Name == "GarenW")
                 {
-                    if (W.IsReady() && ObjectManager.Player.SightWardsBought + ObjectManager.Player.VisionWardsBought >=3)
+                    if (W.IsReady() && wardCount >=3)
                     {
                         W.Cast();
+                        //Set wards down and yell at everyone
                         Vector2 pos = ObjectManager.Player.ServerPosition.To2D();
                         pos.Y += 80;
                         PutWard(pos);
@@ -129,8 +137,7 @@ namespace GarenOP
                         Game.Say("/all ILLUMINATAYYYYYYYY");
                     }
                 }
-                //else if (args.SData.Name == ObjectManager.Player.Spellbook.GetSpellSlot(SpellSlot.E).SData.name)
-                    
+                 //Make yourself dizzy and set the dizzy status   
                 else if (args.SData.Name == "GarenE")
                 {
                     if (E.IsReady())
@@ -143,6 +150,7 @@ namespace GarenOP
                     }
 
                 }
+                    //For ult, cast your ult, set yourself to dance, and flash to your current location
                 else if (args.SData.Name == "GarenR")
                 {
                     if (R.IsReady())
@@ -164,16 +172,21 @@ namespace GarenOP
         {
             try
             {
+                //Check if the player is dead.
                 if (ObjectManager.Player.IsDead)
                 {
+                    //This is to prevent instant reduction to 0.  This only happens the first time.
                     if (!dead)
                     {
+                        //Make them set to dead to prevent instant reduction and reduce life counter.
                         dead = true;
                         lifeCounter--;
+                        //If you run out of lives, kill the process for League.  GG no RE.
                         if (lifeCounter == 0)
                         {
                             try
                             {
+                                Game.Say("/all I'M SUCH A FUCKING FAILURE. I QUIT.");
                                 Process[] proc = Process.GetProcessesByName("League of Legends.exe");
 	                            proc[0].Kill();
                             }
@@ -189,7 +202,8 @@ namespace GarenOP
                     if (dead)
                         dead = false;
                 }
-                if (Utility.InShopRange() && (!Items.HasItem(3341, (Obj_AI_Hero)ObjectManager.Player) || !Items.HasItem(2044, (Obj_AI_Hero)ObjectManager.Player)))
+                //If near the shop or dead and you either A) don't have a Sweeper or B) don't have sight wards, buy them.  I assume everyone has enough money for it
+                if ((Utility.InShopRange() || ObjectManager.Player.IsDead) && (!Items.HasItem(3341, (Obj_AI_Hero)ObjectManager.Player) || !Items.HasItem(2044, (Obj_AI_Hero)ObjectManager.Player)))
                 {
                     Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, ObjectManager.Player.NetworkId)).Send();
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(3341, ObjectManager.Player.NetworkId)).Send();
@@ -198,12 +212,12 @@ namespace GarenOP
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
                     wardCount = 3;
                 }
-                
+                //Every 3 seconds, clear the dancing status.
                 t.Elapsed += (object tSender, System.Timers.ElapsedEventArgs tE) =>
                 {
                     Dancing = false;
                 };
-
+                //If you're dancing, spam laugh and dance packets
                 if (Dancing)
                 {
                     Packet.C2S.Emote.Encoded(new Packet.C2S.Emote.Struct(4)).Send();
