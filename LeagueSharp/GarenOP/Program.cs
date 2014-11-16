@@ -78,7 +78,7 @@ namespace GarenOP
                 if (args.SData.Name.ToLower().Contains("basic"))
                 {
                     
-                   if(Dizzy==true)
+                   if(Dizzy==false)
                     {
                         ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
                         if (E.IsReady())
@@ -92,14 +92,14 @@ namespace GarenOP
                 //Mother bitch recall.
                 if (args.SData.Name.ToLower().Equals("recall"))
                 {
-                    Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
+                    
                 }
                 if (args.SData.Name == "GarenQ")
                 {
                     //If you q while dizzy, it doesn't land.
                     if (Q.IsReady())
                     {
-                        if (Dizzy == true)
+                        if (Dizzy == false)
                         {
                             //So cancel the ability and then check dizzy status again
                             ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
@@ -113,7 +113,7 @@ namespace GarenOP
                         else
                         {
                             Q.Cast();
-                            Game.Say("/all SILENZZZ SKRUBZZZ");
+                            
                         }
 
                     }
@@ -130,11 +130,11 @@ namespace GarenOP
                         System.Threading.Thread.Sleep(600);
                         pos.Y -= 160;
                         pos.X += 80;
-                        PutWard(pos);
+                       
                         System.Threading.Thread.Sleep(600);
                         pos.X -= 160;
-                        PutWard(pos);
-                        Game.Say("/all ILLUMINATAYYYYYYYY");
+                        
+                        
                     }
                 }
                  //Make yourself dizzy and set the dizzy status   
@@ -143,10 +143,10 @@ namespace GarenOP
                     if (E.IsReady())
                     {
                         E.Cast();
-                        Dizzy = true;
-                        Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
+                        Dizzy = false;
+                        
 
-                        Game.PrintChat("You are too dizzy to attack for a while!");
+                        
                     }
 
                 }
@@ -156,8 +156,8 @@ namespace GarenOP
                     if (R.IsReady())
                     {
                         ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Trinket, ObjectManager.Player.ServerPosition);
-                        Dancing = true;
-                        ObjectManager.Player.SummonerSpellbook.CastSpell(ObjectManager.Player.GetSpellSlot("SummonerFlash"),ObjectManager.Player.ServerPosition);
+                        Dancing = false;
+                        
 
                     }
 
@@ -186,7 +186,7 @@ namespace GarenOP
                         {
                             try
                             {
-                                Game.Say("/all I'M SUCH A FUCKING FAILURE. I QUIT.");
+                                
                                 Process[] proc = Process.GetProcessesByName("League of Legends.exe");
 	                            proc[0].Kill();
                             }
