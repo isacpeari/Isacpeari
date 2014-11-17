@@ -1,5 +1,4 @@
-
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +9,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 namespace GarenOP
 {
-class Program
+class Programa
 {
 public static int lifeCounter = 3;
 public static bool dead = false;
@@ -38,6 +37,19 @@ Game.PrintChat("GarenOP loaded!");
 Game.OnGameUpdate += OnGameUpdate;
 Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
 }
+public static int GetWardId()
+{
+//All the ward IDs
+int[] wardIds = { 3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043 };
+foreach (int id in wardIds)
+{
+if (Items.HasItem(id) && Items.CanUseItem(id))
+return id;
+}
+return -1;
+}
+public static bool PutWard(Vector2 pos)
+{
 //Loop through inventory and place down whatever wards you have. Taken from Lee Sin scripts
 int wardItem;
 if ((wardItem = GetWardId()) != -1)
@@ -148,16 +160,6 @@ else
 {
 if (dead)
 dead = false;
-}
-//If near the shop or dead and you either A) don't have a Sweeper or B) don't have sight wards, buy them. I assume everyone has enough money for it
-if ((Utility.InShopRange() || ObjectManager.Player.IsDead) && (!Items.HasItem(3341, (Obj_AI_Hero)ObjectManager.Player) || !Items.HasItem(2044, (Obj_AI_Hero)ObjectManager.Player)))
-{
-Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, ObjectManager.Player.NetworkId)).Send();
-Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(3341, ObjectManager.Player.NetworkId)).Send();
-Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
-Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
-Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
-wardCount = 3;
 }
 //Every 3 seconds, clear the dancing status.
 t.Elapsed += (object tSender, System.Timers.ElapsedEventArgs tE) =>
