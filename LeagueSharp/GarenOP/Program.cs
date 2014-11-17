@@ -39,8 +39,6 @@ Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
 }
 {
 //All the ward IDs
-int[] wardIds = { 3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043 };
-foreach (int id in wardIds)
 {
 if (Items.HasItem(id) && Items.CanUseItem(id))
 return id;
