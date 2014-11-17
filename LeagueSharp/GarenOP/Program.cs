@@ -169,8 +169,6 @@ Dancing = false;
 //If you're dancing, spam laugh and dance packets
 if (Dancing)
 {
-Packet.C2S.Emote.Encoded(new Packet.C2S.Emote.Struct(4)).Send();
-Packet.C2S.Emote.Encoded(new Packet.C2S.Emote.Struct(2)).Send();
 }
 }
 catch (Exception e)
