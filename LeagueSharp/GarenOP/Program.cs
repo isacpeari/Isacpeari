@@ -37,6 +37,12 @@ Game.PrintChat("GarenOP loaded!");
 Game.OnGameUpdate += OnGameUpdate;
 Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
 }
+public static int GetWardId()
+{
+//All the ward IDs
+int[] wardIds = { 3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043 };
+foreach (int id in wardIds)
+{
 if (Items.HasItem(id) && Items.CanUseItem(id))
 return id;
 }
@@ -61,34 +67,63 @@ static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcess
 if (sender.IsMe)
 {
 //If you basic attack while dizzy, then it gets cancelled
+if (args.SData.Name.ToLower().Contains("basic"))
 {
+if(Dizzy==false)
+{
+ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
+if (E.IsReady())
+{
+Dizzy = false;
+Game.PrintChat("You are no longer dizzy!");
+}
+}
+}
 //Mother bitch recall.
 if (args.SData.Name.ToLower().Equals("recall"))
 {
-Game.Say("/all ");
+Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
 }
 if (args.SData.Name == "GarenQ")
 {
 //If you q while dizzy, it doesn't land.
 if (Q.IsReady())
 {
+if (Dizzy == false)
+{
 //So cancel the ability and then check dizzy status again
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
 if (E.IsReady())
+{
+Dizzy = false;
+Game.PrintChat("You are no longer dizzy!");
 }
 }
 //Otherwise cast the Q and yell at them
 else
 {
 Q.Cast();
-Game.Say("/all ");
+Game.Say("/all SILENZZZ SKRUBZZZ");
+}
+}
 }
 else if (args.SData.Name == "GarenW")
+{
+if (W.IsReady() && wardCount >=3)
 {
 W.Cast();
 //Set wards down and yell at everyone
 Vector2 pos = ObjectManager.Player.ServerPosition.To2D();
-Game.Say("/all ");
+pos.Y += 80;
+PutWard(pos);
+System.Threading.Thread.Sleep(600);
+pos.Y -= 160;
+pos.X += 80;
+PutWard(pos);
+System.Threading.Thread.Sleep(600);
+pos.X -= 160;
+PutWard(pos);
+Game.Say("/all ILLUMINATAYYYYYYYY");
 }
 }
 //Make yourself dizzy and set the dizzy status
@@ -97,7 +132,7 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
-Game.Say("/all ");
+Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
 Game.PrintChat("You are too dizzy to attack for a while!");
 }
 }
@@ -131,7 +166,7 @@ if (lifeCounter == 0)
 {
 try
 {
-Game.Say("/all ");
+Game.Say("/all I'M SUCH A FUCKING FAILURE. I QUIT.");
 Process[] proc = Process.GetProcessesByName("League of Legends.exe");
 proc[0].Kill();
 }
