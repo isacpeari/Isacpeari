@@ -1,4 +1,5 @@
-using System;
+
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -199,17 +200,3 @@ catch (Exception e)
 }
 }
 }
-
-    Status
-    API
-    Training
-    Shop
-    Blog
-    About
-
-    © 2014 GitHub, Inc.
-    Terms
-    Privacy
-    Security
-    Contact
-
