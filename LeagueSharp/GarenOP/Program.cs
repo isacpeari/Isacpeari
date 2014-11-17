@@ -68,6 +68,11 @@ static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcess
 if (sender.IsMe)
 {
 //If you basic attack while dizzy, then it gets cancelled
+if (args.SData.Name.ToLower().Contains("nothing"))
+{
+if(Dizzy==false)
+{
+//If you basic attack while dizzy, then it gets cancelled
 {
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
