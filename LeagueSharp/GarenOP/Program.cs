@@ -27,7 +27,7 @@ static void Main(string[] args)
 t = new System.Timers.Timer()
 {
 Enabled = true,
-Interval = 3000
+Interval = 30
 };
 CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
 }
