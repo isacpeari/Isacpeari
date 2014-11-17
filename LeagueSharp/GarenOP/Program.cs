@@ -163,14 +163,6 @@ if (!dead)
 //Make them set to dead to prevent instant reduction and reduce life counter.
 dead = true;
 lifeCounter--;
-//If you run out of lives, kill the process for League. GG no RE.
-if (lifeCounter == 0)
-{
-try
-{
-Game.Say("/all I'M SUCH A FUCKING FAILURE. I QUIT.");
-Process[] proc = Process.GetProcessesByName("League of Legends.exe");
-proc[0].Kill();
 }
 catch(Exception e)
 {
@@ -183,10 +175,22 @@ else
 if (dead)
 dead = false;
 }
+//If near the shop or dead and you either A) don't have a Sweeper or B) don't have sight wards, buy them. I assume everyone has enough money for it
+if ((Utility.InShopRange() || ObjectManager.Player.IsDead) && (!Items.HasItem(3341, (Obj_AI_Hero)ObjectManager.Player) || !Items.HasItem(2044, (Obj_AI_Hero)ObjectManager.Player)))
+{
+Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, ObjectManager.Player.NetworkId)).Send();
+Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(3341, ObjectManager.Player.NetworkId)).Send();
+Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
+Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
+Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
+wardCount = 3;
+}
+//Every 3 seconds, clear the dancing status.
 t.Elapsed += (object tSender, System.Timers.ElapsedEventArgs tE) =>
 {
 Dancing = false;
 };
+//If you're dancing, spam laugh and dance packets
 if (Dancing)
 {
 Packet.C2S.Emote.Encoded(new Packet.C2S.Emote.Struct(4)).Send();
