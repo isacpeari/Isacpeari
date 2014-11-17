@@ -37,18 +37,44 @@ Game.PrintChat("GarenOP loaded!");
 Game.OnGameUpdate += OnGameUpdate;
 Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
 }
+public static int GetWardId()
 {
+//All the ward IDs
+int[] wardIds = { 3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043 };
+foreach (int id in wardIds)
+{
+if (Items.HasItem(id) && Items.CanUseItem(id))
+return id;
+}
+return -1;
+}
+public static bool PutWard(Vector2 pos)
+{
+//Loop through inventory and place down whatever wards you have. Taken from Lee Sin scripts
+int wardItem;
+if ((wardItem = GetWardId()) != -1)
+{
+foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)wardItem))
+{
+slot.UseItem(pos.To3D());
+return true;
+}
+}
+return false;
+}
+static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+{
+if (sender.IsMe)
 {
 //If you basic attack while dizzy, then it gets cancelled
 if (args.SData.Name.ToLower().Contains("basic"))
 {
-if(Dizzy==true)
+if(Dizzy==false)
 {
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
 {
 Dizzy = false;
-Game.PrintChat("You are no longer dizzy!");
 }
 }
 }
@@ -62,27 +88,23 @@ if (args.SData.Name == "GarenQ")
 //If you q while dizzy, it doesn't land.
 if (Q.IsReady())
 {
-if (Dizzy == true)
+if (Dizzy == false)
 {
 //So cancel the ability and then check dizzy status again
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
 if (E.IsReady())
 {
 Dizzy = false;
-Game.PrintChat("You are no longer dizzy!");
 }
 }
 //Otherwise cast the Q and yell at them
 else
 {
 Q.Cast();
-Game.Say("/all SILENZZZ SKRUBZZZ");
 }
 }
 }
 else if (args.SData.Name == "GarenW")
-{
-if (W.IsReady() && wardCount >=3)
 {
 W.Cast();
 //Set wards down and yell at everyone
@@ -96,8 +118,6 @@ if (E.IsReady())
 {
 E.Cast();
 Dizzy = false;
-Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
-Game.PrintChat("You are too dizzy to attack for a while!");
 }
 }
 //For ult, cast your ult, set yourself to dance, and flash to your current location
@@ -134,6 +154,16 @@ else
 if (dead)
 dead = false;
 }
+//If near the shop or dead and you either A) don't have a Sweeper or B) don't have sight wards, buy them. I assume everyone has enough money for it
+if ((Utility.InShopRange() || ObjectManager.Player.IsDead) && (!Items.HasItem(3341, (Obj_AI_Hero)ObjectManager.Player) || !Items.HasItem(2044, (Obj_AI_Hero)ObjectManager.Player)))
+{
+Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, ObjectManager.Player.NetworkId)).Send();
+Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(3341, ObjectManager.Player.NetworkId)).Send();
+Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
+Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
+Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(2044, ObjectManager.Player.NetworkId)).Send();
+wardCount = 3;
+}
 //Every 3 seconds, clear the dancing status.
 t.Elapsed += (object tSender, System.Timers.ElapsedEventArgs tE) =>
 {
@@ -142,6 +172,8 @@ Dancing = false;
 //If you're dancing, spam laugh and dance packets
 if (Dancing)
 {
+Packet.C2S.Emote.Encoded(new Packet.C2S.Emote.Struct(4)).Send();
+Packet.C2S.Emote.Encoded(new Packet.C2S.Emote.Struct(2)).Send();
 }
 }
 catch (Exception e)
