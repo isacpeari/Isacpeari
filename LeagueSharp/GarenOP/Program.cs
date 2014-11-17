@@ -75,9 +75,6 @@ ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.Serv
 if (E.IsReady())
 {
 Dizzy = false;
-Game.PrintChat("You are no longer dizzy!");
-}
-}
 }
 //Mother bitch recall.
 if (args.SData.Name.ToLower().Equals("recall"))
@@ -96,13 +93,10 @@ if (E.IsReady())
 Dizzy = false;
 Game.PrintChat("You are no longer dizzy!");
 }
-}
 //Otherwise cast the Q and yell at them
 else
 {
 Q.Cast();
-}
-}
 }
 else if (args.SData.Name == "GarenW")
 {
@@ -127,11 +121,6 @@ Dizzy = false;
 //For ult, cast your ult, set yourself to dance, and flash to your current location
 else if (args.SData.Name == "GarenR")
 {
-{
-}
-}
-}
-}
 private static void OnGameUpdate(EventArgs args)
 {
 try
@@ -155,10 +144,6 @@ proc[0].Kill();
 }
 catch(Exception e)
 {
-}
-}
-}
-}
 else
 {
 if (dead)
