@@ -27,7 +27,7 @@ static void Main(string[] args)
 t = new System.Timers.Timer()
 {
 Enabled = true,
-Interval = 30
+Interval = 3000
 };
 CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
 }
@@ -58,7 +58,7 @@ if ((wardItem = GetWardId()) != -1)
 foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)wardItem))
 {
 slot.UseItem(pos.To3D());
-return true;
+return false;
 }
 }
 return false;
@@ -68,9 +68,6 @@ static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcess
 if (sender.IsMe)
 {
 //If you basic attack while dizzy, then it gets cancelled
-if (args.SData.Name.ToLower().Contains("basic"))
-{
-if(Dizzy==true)
 {
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
