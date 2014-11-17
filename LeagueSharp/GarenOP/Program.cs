@@ -37,12 +37,6 @@ Game.PrintChat("GarenOP loaded!");
 Game.OnGameUpdate += OnGameUpdate;
 Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
 }
-public static int GetWardId()
-{
-//All the ward IDs
-int[] wardIds = { 3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043 };
-foreach (int id in wardIds)
-{
 if (Items.HasItem(id) && Items.CanUseItem(id))
 return id;
 }
@@ -67,17 +61,7 @@ static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcess
 if (sender.IsMe)
 {
 //If you basic attack while dizzy, then it gets cancelled
-if (args.SData.Name.ToLower().Contains("basic"))
 {
-if(Dizzy==false)
-{
-ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
-if (E.IsReady())
-{
-Dizzy = false;
-}
-}
-}
 //Mother bitch recall.
 if (args.SData.Name.ToLower().Equals("recall"))
 {
@@ -88,13 +72,9 @@ if (args.SData.Name == "GarenQ")
 //If you q while dizzy, it doesn't land.
 if (Q.IsReady())
 {
-if (Dizzy == false)
-{
 //So cancel the ability and then check dizzy status again
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
 if (E.IsReady())
-{
-Dizzy = false;
 }
 }
 //Otherwise cast the Q and yell at them
