@@ -19,7 +19,6 @@ public static Spell W = new Spell(SpellSlot.W);
 public static Spell E = new Spell(SpellSlot.E);
 public static Spell R = new Spell(SpellSlot.R);
 public static int wardCount = 0;
-public static bool Dizzy = false;
 public static System.Timers.Timer t;
 public static bool Dancing = false;
 static void Main(string[] args)
@@ -67,6 +66,19 @@ static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcess
 {
 if (sender.IsMe)
 {
+//If you basic attack while dizzy, then it gets cancelled
+if (args.SData.Name.ToLower().Contains("basic"))
+{
+if(Dizzy==true)
+{
+ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
+if (E.IsReady())
+{
+Dizzy = false;
+Game.PrintChat("You are no longer dizzy!");
+}
+}
+}
 //Mother bitch recall.
 if (args.SData.Name.ToLower().Equals("recall"))
 {
@@ -76,6 +88,15 @@ if (args.SData.Name == "GarenQ")
 {
 //If you q while dizzy, it doesn't land.
 if (Q.IsReady())
+{
+if (Dizzy == true)
+{
+//So cancel the ability and then check dizzy status again
+ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
+if (E.IsReady())
+{
+Dizzy = false;
+Game.PrintChat("You are no longer dizzy!");
 }
 }
 //Otherwise cast the Q and yell at them
@@ -111,6 +132,11 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
+Dizzy = true;
+Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
+Game.PrintChat("You are too dizzy to attack for a while!");
+}
+}
 //For ult, cast your ult, set yourself to dance, and flash to your current location
 else if (args.SData.Name == "GarenR")
 {
