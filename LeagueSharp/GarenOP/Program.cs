@@ -81,7 +81,7 @@ Dizzy = false;
 //Mother bitch recall.
 if (args.SData.Name.ToLower().Equals("recall"))
 {
-Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
+Game.Say("/all ");
 }
 if (args.SData.Name == "GarenQ")
 {
@@ -101,10 +101,13 @@ Dizzy = false;
 else
 {
 Q.Cast();
+Game.Say("/all ");
 }
 }
 }
 else if (args.SData.Name == "GarenW")
+{
+if (W.IsReady() && wardCount >=3)
 {
 W.Cast();
 //Set wards down and yell at everyone
@@ -118,6 +121,7 @@ if (E.IsReady())
 {
 E.Cast();
 Dizzy = false;
+Game.Say("/all ");
 }
 }
 //For ult, cast your ult, set yourself to dance, and flash to your current location
