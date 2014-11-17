@@ -19,6 +19,7 @@ public static Spell W = new Spell(SpellSlot.W);
 public static Spell E = new Spell(SpellSlot.E);
 public static Spell R = new Spell(SpellSlot.R);
 public static int wardCount = 0;
+public static bool Dizzy = false;
 public static System.Timers.Timer t;
 public static bool Dancing = false;
 static void Main(string[] args)
@@ -132,9 +133,8 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
-Dizzy = true;
+Dizzy = false;
 Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
-Game.PrintChat("You are too dizzy to attack for a while!");
 }
 }
 //For ult, cast your ult, set yourself to dance, and flash to your current location
