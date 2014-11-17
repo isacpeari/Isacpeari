@@ -12,7 +12,7 @@ namespace GarenOP
 {
 class Program
 {
-public static int lifeCounter = 20;
+public static int lifeCounter = 3;
 public static bool dead = false;
 public static Spell Q = new Spell(SpellSlot.Q);
 public static Spell W = new Spell(SpellSlot.W);
@@ -70,7 +70,6 @@ if (sender.IsMe)
 //If you basic attack while dizzy, then it gets cancelled
 if (args.SData.Name.ToLower().Contains("basic"))
 {
-if(Dizzy==false)
 {
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
@@ -87,14 +86,9 @@ if (args.SData.Name == "GarenQ")
 //If you q while dizzy, it doesn't land.
 if (Q.IsReady())
 {
-if (Dizzy == false)
-{
 //So cancel the ability and then check dizzy status again
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
 if (E.IsReady())
-{
-Dizzy = false;
-Game.PrintChat("You are no longer dizzy!");
 }
 }
 //Otherwise cast the Q and yell at them
@@ -130,9 +124,6 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
-Dizzy = false;
-Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
-Game.PrintChat("You are too dizzy to attack for a while!");
 }
 }
 //For ult, cast your ult, set yourself to dance, and flash to your current location
@@ -152,7 +143,7 @@ private static void OnGameUpdate(EventArgs args)
 try
 {
 //Check if the player is dead.
-if (ObjectManager.Player.Deaths ==20)
+if (ObjectManager.Player.Deaths ==3)
 {
 try
 {
