@@ -70,10 +70,11 @@ if (sender.IsMe)
 //If you basic attack while dizzy, then it gets cancelled
 if (args.SData.Name.ToLower().Contains("basic"))
 {
+if(Dizzy==false)
+{
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
 {
-Dizzy = false;
 Game.PrintChat("You are no longer dizzy!");
 }
 }
@@ -81,7 +82,7 @@ Game.PrintChat("You are no longer dizzy!");
 //Mother bitch recall.
 if (args.SData.Name.ToLower().Equals("recall"))
 {
-Game.Say("/all ");
+Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
 }
 if (args.SData.Name == "GarenQ")
 {
@@ -102,7 +103,7 @@ Game.PrintChat("You are no longer dizzy!");
 else
 {
 Q.Cast();
-Game.Say("/all ");
+Game.Say("/all SILENZZZ SKRUBZZZ");
 }
 }
 }
@@ -122,7 +123,7 @@ PutWard(pos);
 System.Threading.Thread.Sleep(600);
 pos.X -= 160;
 PutWard(pos);
-Game.Say("/all ");
+Game.Say("/all ILLUMINATAYYYYYYYY");
 }
 }
 //Make yourself dizzy and set the dizzy status
@@ -132,7 +133,7 @@ if (E.IsReady())
 {
 E.Cast();
 Dizzy = false;
-Game.Say("/all ");
+Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
 Game.PrintChat("You are too dizzy to attack for a while!");
 }
 }
