@@ -107,9 +107,8 @@ Game.Say("/all ");
 }
 else if (args.SData.Name == "GarenW")
 {
-if (W.IsReady() && wardCount >=0)
+if (W.IsReady() && wardCount >=3)
 {
-W.Cast();
 //Set wards down and yell at everyone
 Vector2 pos = ObjectManager.Player.ServerPosition.To2D();
 pos.Y += 80;
