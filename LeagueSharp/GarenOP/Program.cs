@@ -183,14 +183,15 @@ else
 if (dead)
 dead = false;
 }
-//If near the shop or dead and you either A) don't have a Sweeper or B) don't have sight wards, buy them. I assume everyone has enough money for it
-}
-//Every 3 seconds, clear the dancing status.
 t.Elapsed += (object tSender, System.Timers.ElapsedEventArgs tE) =>
 {
 Dancing = false;
 };
-//If you're dancing, spam laugh and dance packets
+if (Dancing)
+{
+Packet.C2S.Emote.Encoded(new Packet.C2S.Emote.Struct(4)).Send();
+Packet.C2S.Emote.Encoded(new Packet.C2S.Emote.Struct(2)).Send();
+}
 }
 catch (Exception e)
 {
