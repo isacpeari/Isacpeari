@@ -75,9 +75,14 @@ ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.Serv
 if (E.IsReady())
 {
 Dizzy = false;
+Game.PrintChat("You are no longer dizzy!");
+}
+}
 }
 //Mother bitch recall.
 if (args.SData.Name.ToLower().Equals("recall"))
+{
+Game.Say("/all ");
 }
 if (args.SData.Name == "GarenQ")
 {
@@ -93,10 +98,14 @@ if (E.IsReady())
 Dizzy = false;
 Game.PrintChat("You are no longer dizzy!");
 }
+}
 //Otherwise cast the Q and yell at them
 else
 {
 Q.Cast();
+Game.Say("/all SILENZZZ SKRUBZZZ");
+}
+}
 }
 else if (args.SData.Name == "GarenW")
 {
@@ -105,10 +114,16 @@ if (W.IsReady() && wardCount >=3)
 W.Cast();
 //Set wards down and yell at everyone
 Vector2 pos = ObjectManager.Player.ServerPosition.To2D();
+pos.Y += 80;
+PutWard(pos);
 System.Threading.Thread.Sleep(600);
-
+pos.Y -= 160;
+pos.X += 80;
+PutWard(pos);
 System.Threading.Thread.Sleep(600);
-
+pos.X -= 160;
+PutWard(pos);
+Game.Say("/all ");
 }
 }
 //Make yourself dizzy and set the dizzy status
@@ -117,10 +132,22 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
-Dizzy = false;
+Game.Say("/all ");
+Game.PrintChat("You are too dizzy to attack for a while!");
+}
+}
 //For ult, cast your ult, set yourself to dance, and flash to your current location
 else if (args.SData.Name == "GarenR")
 {
+if (R.IsReady())
+{
+ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Trinket, ObjectManager.Player.ServerPosition);
+Dancing = true;
+ObjectManager.Player.SummonerSpellbook.CastSpell(ObjectManager.Player.GetSpellSlot("SummonerFlash"),ObjectManager.Player.ServerPosition);
+}
+}
+}
+}
 private static void OnGameUpdate(EventArgs args)
 {
 try
@@ -139,11 +166,16 @@ if (lifeCounter == 0)
 {
 try
 {
+Game.Say("/all ");
 Process[] proc = Process.GetProcessesByName("League of Legends.exe");
 proc[0].Kill();
 }
 catch(Exception e)
 {
+}
+}
+}
+}
 else
 {
 if (dead)
