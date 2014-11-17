@@ -58,7 +58,7 @@ if ((wardItem = GetWardId()) != -1)
 foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)wardItem))
 {
 slot.UseItem(pos.To3D());
-return false;
+return true;
 }
 }
 return false;
@@ -68,11 +68,9 @@ static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcess
 if (sender.IsMe)
 {
 //If you basic attack while dizzy, then it gets cancelled
-if (args.SData.Name.ToLower().Contains("nothing"))
+if (args.SData.Name.ToLower().Contains("basic"))
 {
-if(Dizzy==false)
-{
-//If you basic attack while dizzy, then it gets cancelled
+if(Dizzy==true)
 {
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
@@ -117,16 +115,6 @@ if (W.IsReady() && wardCount >=3)
 W.Cast();
 //Set wards down and yell at everyone
 Vector2 pos = ObjectManager.Player.ServerPosition.To2D();
-pos.Y += 80;
-PutWard(pos);
-System.Threading.Thread.Sleep(600);
-pos.Y -= 160;
-pos.X += 80;
-PutWard(pos);
-System.Threading.Thread.Sleep(600);
-pos.X -= 160;
-PutWard(pos);
-Game.Say("/all ILLUMINATAYYYYYYYY");
 }
 }
 //Make yourself dizzy and set the dizzy status
@@ -137,6 +125,7 @@ if (E.IsReady())
 E.Cast();
 Dizzy = false;
 Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
+Game.PrintChat("You are too dizzy to attack for a while!");
 }
 }
 //For ult, cast your ult, set yourself to dance, and flash to your current location
