@@ -69,7 +69,7 @@ if (sender.IsMe)
 //If you basic attack while dizzy, then it gets cancelled
 if (args.SData.Name.ToLower().Contains("basic"))
 {
-if(Dizzy==false)
+if(Dizzy==true)
 {
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
@@ -94,7 +94,7 @@ if (Dizzy == false)
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
 if (E.IsReady())
 {
-Dizzy = true;
+Dizzy = false;
 }
 }
 //Otherwise cast the Q and yell at them
