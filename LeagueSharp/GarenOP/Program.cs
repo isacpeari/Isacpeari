@@ -1,5 +1,4 @@
-
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -155,16 +154,7 @@ private static void OnGameUpdate(EventArgs args)
 try
 {
 //Check if the player is dead.
-if (ObjectManager.Player.IsDead)
-{
-//This is to prevent instant reduction to 0. This only happens the first time.
-if (!dead)
-{
-//Make them set to dead to prevent instant reduction and reduce life counter.
-dead = true;
-lifeCounter--;
-//If you run out of lives, kill the process for League. GG no RE.
-if (lifeCounter == 0)
+if (ObjectManager.Player.Deaths ==3)
 {
 try
 {
@@ -172,10 +162,8 @@ Game.Say("/all I'M SUCH A FUCKING FAILURE. I QUIT.");
 Process[] proc = Process.GetProcessesByName("League of Legends.exe");
 proc[0].Kill();
 }
-catch(Exception e)
+catch
 {
-}
-}
 }
 }
 else
@@ -210,3 +198,18 @@ catch (Exception e)
 }
 }
 }
+}
+
+    Status
+    API
+    Training
+    Shop
+    Blog
+    About
+
+    © 2014 GitHub, Inc.
+    Terms
+    Privacy
+    Security
+    Contact
+
