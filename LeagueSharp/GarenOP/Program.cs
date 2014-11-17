@@ -38,21 +38,6 @@ Game.OnGameUpdate += OnGameUpdate;
 Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
 }
 {
-//All the ward IDs
-{
-//Loop through inventory and place down whatever wards you have. Taken from Lee Sin scripts
-{
-foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)wardItem))
-{
-slot.UseItem(pos.To3D());
-return true;
-}
-}
-return false;
-}
-static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-{
-if (sender.IsMe)
 {
 //If you basic attack while dizzy, then it gets cancelled
 if (args.SData.Name.ToLower().Contains("basic"))
