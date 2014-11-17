@@ -40,8 +40,6 @@ Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
 public static int GetWardId()
 {
 //All the ward IDs
-int[] wardIds = { 3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043 };
-foreach (int id in wardIds)
 {
 if (Items.HasItem(id) && Items.CanUseItem(id))
 return id;
@@ -80,7 +78,7 @@ Game.PrintChat("You are no longer dizzy!");
 //Mother bitch recall.
 if (args.SData.Name.ToLower().Equals("recall"))
 {
-Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
+Game.Say("/all ");
 }
 if (args.SData.Name == "GarenQ")
 {
@@ -101,7 +99,7 @@ Game.PrintChat("You are no longer dizzy!");
 else
 {
 Q.Cast();
-Game.Say("/all SILENZZZ SKRUBZZZ");
+Game.Say("/all ");
 }
 }
 }
@@ -111,17 +109,9 @@ if (W.IsReady() && wardCount >=3)
 {
 W.Cast();
 //Set wards down and yell at everyone
-Vector2 pos = ObjectManager.Player.ServerPosition.To2D();
-pos.Y += 80;
-PutWard(pos);
 System.Threading.Thread.Sleep(600);
-pos.Y -= 160;
-pos.X += 80;
-PutWard(pos);
 System.Threading.Thread.Sleep(600);
-pos.X -= 160;
-PutWard(pos);
-Game.Say("/all ILLUMINATAYYYYYYYY");
+Game.Say("/all ");
 }
 }
 //Make yourself dizzy and set the dizzy status
@@ -130,7 +120,7 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
-Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
+Game.Say("/all ");
 Game.PrintChat("You are too dizzy to attack for a while!");
 }
 }
@@ -140,7 +130,7 @@ else if (args.SData.Name == "GarenR")
 if (R.IsReady())
 {
 ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Trinket, ObjectManager.Player.ServerPosition);
-Dancing = true;
+Dancing = false;
 ObjectManager.Player.SummonerSpellbook.CastSpell(ObjectManager.Player.GetSpellSlot("SummonerFlash"),ObjectManager.Player.ServerPosition);
 }
 }
