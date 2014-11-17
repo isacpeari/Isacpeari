@@ -46,24 +46,10 @@ return id;
 }
 return -1;
 }
-public static bool PutWard(Vector2 pos)
 {
 //Loop through inventory and place down whatever wards you have. Taken from Lee Sin scripts
-int wardItem;
-if ((wardItem = GetWardId()) != -1)
 {
-foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)wardItem))
-{
-slot.UseItem(pos.To3D());
-return true;
-}
-}
-return false;
-}
-static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-{
-if (sender.IsMe)
-{
+
 //If you basic attack while dizzy, then it gets cancelled
 if (args.SData.Name.ToLower().Contains("basic"))
 {
