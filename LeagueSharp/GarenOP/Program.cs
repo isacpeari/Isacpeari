@@ -120,7 +120,7 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
-Dizzy = false;
+Dizzy = true;
 Game.Say("/all ");
 }
 }
