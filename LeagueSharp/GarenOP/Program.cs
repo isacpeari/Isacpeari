@@ -73,8 +73,6 @@ if(Dizzy==false)
 {
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
-{
-Dizzy = false;
 }
 }
 }
