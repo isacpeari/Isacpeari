@@ -74,7 +74,7 @@ if(Dizzy==false)
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
 {
-Dizzy = false;
+Dizzy = true;
 Game.PrintChat("You are no longer dizzy!");
 }
 }
