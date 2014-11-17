@@ -75,7 +75,6 @@ ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.Serv
 if (E.IsReady())
 {
 Dizzy = false;
-Game.PrintChat("You are no longer dizzy!");
 }
 }
 }
@@ -96,33 +95,19 @@ ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.Ser
 if (E.IsReady())
 {
 Dizzy = false;
-Game.PrintChat("You are no longer dizzy!");
 }
 }
 //Otherwise cast the Q and yell at them
 else
 {
 Q.Cast();
-Game.Say("/all SILENZZZ SKRUBZZZ");
-}
-}
+Game.Say("/all ");
 }
 else if (args.SData.Name == "GarenW")
-{
-if (W.IsReady() && wardCount >=3)
 {
 W.Cast();
 //Set wards down and yell at everyone
 Vector2 pos = ObjectManager.Player.ServerPosition.To2D();
-pos.Y += 80;
-PutWard(pos);
-System.Threading.Thread.Sleep(600);
-pos.Y -= 160;
-pos.X += 80;
-PutWard(pos);
-System.Threading.Thread.Sleep(600);
-pos.X -= 160;
-PutWard(pos);
 Game.Say("/all ");
 }
 }
