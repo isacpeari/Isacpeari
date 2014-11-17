@@ -33,7 +33,7 @@ CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
 private static void Game_OnGameLoad(EventArgs args)
 {
 //Let them know it loaded.
-Game.PrintChat("GarenIsac loaded!");
+Game.PrintChat("GarenOP loaded!");
 Game.OnGameUpdate += OnGameUpdate;
 Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
 }
@@ -66,9 +66,10 @@ static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcess
 {
 if (sender.IsMe)
 {
-//If you basic attack while dizzy, then it gets cancelled
-if (args.SData.Name.ToLower().Contains("basic"))
+ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
+if (E.IsReady())
 {
+Dizzy = false;
 }
 }
 }
