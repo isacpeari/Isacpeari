@@ -40,21 +40,39 @@ Obj_AI_Hero.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
 public static int GetWardId()
 {
 //All the ward IDs
+int[] wardIds = { 3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043 };
+foreach (int id in wardIds)
 {
 if (Items.HasItem(id) && Items.CanUseItem(id))
 return id;
 }
 return -1;
 }
+public static bool PutWard(Vector2 pos)
 {
 //Loop through inventory and place down whatever wards you have. Taken from Lee Sin scripts
+int wardItem;
+if ((wardItem = GetWardId()) != -1)
 {
-
+foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)wardItem))
+{
+slot.UseItem(pos.To3D());
+return true;
+}
+}
+return false;
+}
+static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+{
+if (sender.IsMe)
+{
 //If you basic attack while dizzy, then it gets cancelled
 if (args.SData.Name.ToLower().Contains("basic"))
 {
 if(Dizzy==false)
 {
+ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
+if (E.IsReady())
 {
 Dizzy = false;
 Game.PrintChat("You are no longer dizzy!");
@@ -70,8 +88,6 @@ if (args.SData.Name == "GarenQ")
 {
 //If you q while dizzy, it doesn't land.
 if (Q.IsReady())
-{
-if (Dizzy == false)
 {
 //So cancel the ability and then check dizzy status again
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
@@ -91,12 +107,20 @@ Game.Say("/all ");
 }
 else if (args.SData.Name == "GarenW")
 {
-if (W.IsReady() && wardCount >=3)
+if (W.IsReady() && wardCount >=0)
 {
 W.Cast();
 //Set wards down and yell at everyone
+Vector2 pos = ObjectManager.Player.ServerPosition.To2D();
+pos.Y += 80;
+PutWard(pos);
 System.Threading.Thread.Sleep(600);
+pos.Y -= 160;
+pos.X += 80;
+PutWard(pos);
 System.Threading.Thread.Sleep(600);
+pos.X -= 160;
+PutWard(pos);
 Game.Say("/all ");
 }
 }
@@ -106,6 +130,7 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
+Dizzy = false;
 Game.Say("/all ");
 Game.PrintChat("You are too dizzy to attack for a while!");
 }
@@ -116,7 +141,7 @@ else if (args.SData.Name == "GarenR")
 if (R.IsReady())
 {
 ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Trinket, ObjectManager.Player.ServerPosition);
-Dancing = false;
+Dancing = true;
 ObjectManager.Player.SummonerSpellbook.CastSpell(ObjectManager.Player.GetSpellSlot("SummonerFlash"),ObjectManager.Player.ServerPosition);
 }
 }
