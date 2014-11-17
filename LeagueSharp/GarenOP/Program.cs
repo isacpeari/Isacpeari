@@ -12,7 +12,7 @@ namespace GarenOP
 {
 class Program
 {
-public static int lifeCounter = 3;
+public static int lifeCounter = 20;
 public static bool dead = false;
 public static Spell Q = new Spell(SpellSlot.Q);
 public static Spell W = new Spell(SpellSlot.W);
@@ -70,7 +70,7 @@ if (sender.IsMe)
 //If you basic attack while dizzy, then it gets cancelled
 if (args.SData.Name.ToLower().Contains("basic"))
 {
-if(Dizzy==true)
+if(Dizzy==false)
 {
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
@@ -83,14 +83,14 @@ Game.PrintChat("You are no longer dizzy!");
 //Mother bitch recall.
 if (args.SData.Name.ToLower().Equals("recall"))
 {
-Game.Say("/all FUCK THIS I'M GOING HOME MOTHER BITCH.");
+Game.Say("/all ");
 }
 if (args.SData.Name == "GarenQ")
 {
 //If you q while dizzy, it doesn't land.
 if (Q.IsReady())
 {
-if (Dizzy == true)
+if (Dizzy == false)
 {
 //So cancel the ability and then check dizzy status again
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition);
@@ -104,7 +104,7 @@ Game.PrintChat("You are no longer dizzy!");
 else
 {
 Q.Cast();
-Game.Say("/all SILENZZZ SKRUBZZZ");
+Game.Say("/all ");
 }
 }
 }
@@ -124,7 +124,7 @@ PutWard(pos);
 System.Threading.Thread.Sleep(600);
 pos.X -= 160;
 PutWard(pos);
-Game.Say("/all ILLUMINATAYYYYYYYY");
+Game.Say("/all ");
 }
 }
 //Make yourself dizzy and set the dizzy status
@@ -133,8 +133,8 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
-Dizzy = true;
-Game.Say("/all I'M TOO DIZZY. I CANNOT SEE!!!!11");
+Dizzy = false;
+Game.Say("/all ");
 Game.PrintChat("You are too dizzy to attack for a while!");
 }
 }
@@ -155,7 +155,7 @@ private static void OnGameUpdate(EventArgs args)
 try
 {
 //Check if the player is dead.
-if (ObjectManager.Player.Deaths ==3)
+if (ObjectManager.Player.Deaths ==20)
 {
 try
 {
