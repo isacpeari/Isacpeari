@@ -69,7 +69,7 @@ if (sender.IsMe)
 //If you basic attack while dizzy, then it gets cancelled
 if (args.SData.Name.ToLower().Contains("basic"))
 {
-if(Dizzy==false)
+if(Dizzy==true)
 {
 ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo,ObjectManager.Player.ServerPosition);
 if (E.IsReady())
@@ -120,7 +120,7 @@ else if (args.SData.Name == "GarenE")
 if (E.IsReady())
 {
 E.Cast();
-Dizzy = true;
+Dizzy = false;
 Game.Say("/all ");
 }
 }
