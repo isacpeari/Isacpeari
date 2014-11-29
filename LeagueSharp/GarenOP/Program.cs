@@ -11,7 +11,7 @@ namespace GarenOP
 {
 class Programa
 {
-public static int lifeCounter = 3;
+public static int lifeCounter = 20;
 public static bool dead = false;
 public static Spell Q = new Spell(SpellSlot.Q);
 public static Spell W = new Spell(SpellSlot.W);
