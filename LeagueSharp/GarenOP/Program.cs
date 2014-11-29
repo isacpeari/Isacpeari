@@ -141,7 +141,7 @@ private static void OnGameUpdate(EventArgs args)
 try
 {
 //Check if the player is dead.
-if (ObjectManager.Player.Deaths ==3)
+if (ObjectManager.Player.Deaths ==20)
 {
 try
 {
